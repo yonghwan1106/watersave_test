@@ -3,10 +3,19 @@ import pandas as pd
 import plotly.express as px
 from datetime import datetime, timedelta
 import anthropic
+import os
+import streamlit as st
+import os
 
-# Anthropic API 키 설정 (실제 사용 시 안전하게 관리해야 함)
-ANTHROPIC_API_KEY = st.secrets["ANTHROPIC_API_KEY"]
+# Streamlit Cloud의 secrets에서 API 키를 가져오거나, 환경 변수에서 가져옵니다.
+ANTHROPIC_API_KEY = st.secrets.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
+
+if not ANTHROPIC_API_KEY:
+    st.error("Anthropic API 키가 설정되지 않았습니다. Streamlit Secrets 또는 환경 변수를 확인해주세요.")
+    st.stop()
+
 client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+
 
 # 가상의 데이터베이스 대신 사용할 전역 변수
 water_usage_data = {}
